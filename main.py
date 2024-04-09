@@ -8,16 +8,11 @@ letter_to_number = dict(zip(alphabet, numbers))
 # Создание словаря для преобразования каждого числа в соответствующую букву
 number_to_letter = dict(zip(numbers, alphabet))
 
-# Определение ключа
-key = 'сон'
 
-# Преобразование ключа в числа
-key_numbers = [letter_to_number[letter] for letter in key]
-
-
-def encrypt(word):
-    # Преобразование слова в числа
+def encrypt(word, key):
+    # Преобразование слова и ключа в числа
     word_numbers = [letter_to_number[letter] for letter in word]
+    key_numbers = [letter_to_number[letter] for letter in key]
 
     # Расширение ключа до длины слова
     extended_key_numbers = key_numbers * (len(word) // len(key_numbers)) + key_numbers[:len(word) % len(key_numbers)]
@@ -32,9 +27,10 @@ def encrypt(word):
     return encrypted_word
 
 
-def decrypt(word):
-    # Преобразование слова в числа
+def decrypt(word, key):
+    # Преобразование слова и ключа в числа
     word_numbers = [letter_to_number[letter] for letter in word]
+    key_numbers = [letter_to_number[letter] for letter in key]
 
     # Расширение ключа до длины слова
     extended_key_numbers = key_numbers * (len(word) // len(key_numbers)) + key_numbers[:len(word) % len(key_numbers)]
@@ -49,12 +45,14 @@ def decrypt(word):
     return decrypted_word
 
 
-# Тестирование функций
-word = 'материя'
-encrypted_word = encrypt(word)
-decrypted_word = decrypt(encrypted_word)
+# Получение слова и ключа от пользователя
+word = input("Введите слово для шифрования: ")
+key = input("Введите ключ: ")
+
+# Шифрование и расшифровка слова
+encrypted_word = encrypt(word, key)
+decrypted_word = decrypt(encrypted_word, key)
 
 print(f'Оригинальное слово: {word}')
 print(f'Зашифрованное слово: {encrypted_word}')
 print(f'Расшифрованное слово: {decrypted_word}')
-
