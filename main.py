@@ -45,14 +45,16 @@ def decrypt(word, key):
     return decrypted_word
 
 
-# Получение слова и ключа от пользователя
-word = input("Введите слово для шифрования: ")
+# Получение слов и ключа от пользователя
+words = input("Введите слова для шифрования, разделенные пробелами: ").split()
 key = input("Введите ключ: ")
 
-# Шифрование и расшифровка слова
-encrypted_word = encrypt(word, key)
-decrypted_word = decrypt(encrypted_word, key)
+# Шифрование и расшифровка каждого слова
+for word in words:
+    encrypted_word = encrypt(word, key)
+    decrypted_word = decrypt(encrypted_word, key)
 
-print(f'Оригинальное слово: {word}')
-print(f'Зашифрованное слово: {encrypted_word}')
-print(f'Расшифрованное слово: {decrypted_word}')
+    print(f'Оригинальное слово: {word}')
+    print(f'Зашифрованное слово: {encrypted_word}')
+    print(f'Расшифрованное слово: {decrypted_word}')
+    print()
