@@ -14,8 +14,9 @@ def encrypt(word, key):
     word_numbers = [letter_to_number[letter] for letter in word]
     key_numbers = [letter_to_number[letter] for letter in key]
 
-    # Расширение ключа до длины слова
-    extended_key_numbers = key_numbers * (len(word) // len(key_numbers)) + key_numbers[:len(word) % len(key_numbers)]
+    # Расширение ключа до длины слова, если ключ короче
+    extended_key_numbers = key_numbers + word_numbers
+    extended_key_numbers = extended_key_numbers[:len(word)]
 
     # Шифрование слова
     encrypted_numbers = [(word_number + key_number) % 33 for word_number, key_number in
@@ -27,34 +28,39 @@ def encrypt(word, key):
     return encrypted_word
 
 
+
 def decrypt(word, key):
     # Преобразование слова и ключа в числа
     word_numbers = [letter_to_number[letter] for letter in word]
     key_numbers = [letter_to_number[letter] for letter in key]
 
-    # Расширение ключа до длины слова
-    extended_key_numbers = key_numbers * (len(word) // len(key_numbers)) + key_numbers[:len(word) % len(key_numbers)]
-
     # Расшифровка слова
     decrypted_numbers = [(word_number - key_number) % 33 for word_number, key_number in
-                         zip(word_numbers, extended_key_numbers)]
+                         zip(word_numbers, key_numbers)]
 
     # Преобразование расшифрованных чисел обратно в буквы
     decrypted_word = ''.join(number_to_letter[number] for number in decrypted_numbers)
 
+    # Расширение ключа до длины слова, если ключ короче
+    key_numbers = key_numbers + [letter_to_number[letter] for letter in decrypted_word]
+    key_numbers = key_numbers[:len(word)]
+
     return decrypted_word
 
 
+
 # Получение слов и ключа от пользователя
-words = input("Введите слово: ").split()
+word = input("Введите слово: ")
 key = input("Введите ключ: ")
 
-# Шифрование и расшифровка каждого слова
-for word in words:
-    encrypted_word = encrypt(word, key)
-    decrypted_word = decrypt(encrypted_word, key)
+# Проверка длины ключа и слова и соответствующие действия
+if len(word) > len(key):
+    key = key + word[:len(word) - len(key)]
 
-    print(f'Оригинальное слово: {word}')
-    print(f'Зашифрованное слово: {encrypted_word}')
-    print(f'Расшифрованное слово: {decrypted_word}')
-    print()
+# Шифрование и расшифровка слова
+encrypted_word = encrypt(word, key)
+decrypted_word = decrypt(encrypted_word, key)
+
+print(f'Оригинальное слово: {word}')
+print(f'Зашифрованное слово: {encrypted_word}')
+print(f'Расшифрованное слово: {decrypted_word}')
